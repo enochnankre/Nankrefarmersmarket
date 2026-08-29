@@ -1,0 +1,23 @@
+$kind: http-request
+name: create product
+description: ""
+url: http://localhost:8000/products
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"corn\",\r
+
+    \  \"size\": \"bags\",\r
+
+    \  \"description\": \"yellowstone farm\",\r
+
+    \  \"price\": 50000,\r
+
+    \  \"quantity\": 500,\r
+
+    \  \"color\": \"\"\r
+
+    }"
+order: 1787995494541

@@ -1,0 +1,5 @@
+$kind: http-request
+name: create user
+url: http://localhost:8000/users/createuser
+method: POST
+order: 630294276290419

@@ -37,11 +37,24 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
     required: true
-  }
+  },
   
+  hasadminacess: {
+    type: Boolean,
+    default: false
+  },
+role: {
+    type: String,
+    enum: ['admin', 'user', 'superadmin', 'manager', 'sales', 'viewer'],
+    default: 'user'
+  },
+
+
 }, {
   timestamps: true
 });
 
 const User = mongoose.model('User', userSchema);
+
+module.exports = User;
 

@@ -11,12 +11,19 @@ router.post("/", (req, res) => {
   });
 });
 
-
-app.use("/products", productRoutes);
-
 router.post('/createproducts', productController.createProduct);
 
 router.put('/updateproducts/:id', productController.updateProducts);
 
 
 module.exports = router;
+
+
+// const express = require("express");
+// const router = express.Router();
+
+// const { createProduct } = require("../Controllers/productController");
+
+// router.post("/", createProduct);
+
+// module.exports = router;

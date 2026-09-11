@@ -39,13 +39,13 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   
-  hasadminacess: {
+  hasadminaccess: {
     type: Boolean,
     default: false
   },
 role: {
     type: String,
-    enum: ['admin', 'user', 'superadmin', 'manager', 'sales', 'viewer'],
+    enum: ['admin', 'user', 'superadmin', 'manager', 'sales', 'storekeeper'],
     default: 'user'
   },
 

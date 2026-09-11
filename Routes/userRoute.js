@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
 
-const { registerUser } = require("../Controllers/usercontroller");
+const { registerUser, } = require("../Controllers/usercontroller");
 
 router.post(
   "/createuser",

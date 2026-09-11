@@ -2,21 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require("../models/users.models.js");
 
-const registerUser = async (req, res) => {
-  try {
-    res.status(201).json({
-      message: "User registered successfully"
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
-};
-
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, phone, username, gender, address, role, hasadminacess } = req.body;
+    const { name, email, password, phone, username, gender, address, role, hasadminaccess } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email, and password are required' });
@@ -38,15 +26,15 @@ const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      name,
-      email,
+      name: req.body.name,
+      email: req.body.email,
       password: hashedPassword,
-      phone,
-      username,
-      gender,
-      address,
-      role: role || 'user',
-      hasadminacess: hasadminacess || false
+      phone: req.body.phone,
+      username: req.body.username,
+      gender: req.body.gender,
+      address: req.body.address,
+      role: req.body.role || 'user',
+      hasadminacess: req.body.hasadminacess || false
     });
 
     const savedUser = await newUser.save();
@@ -56,6 +44,7 @@ const createUser = async (req, res) => {
       user: savedUser
     });
   } catch (error) {
+    console.error('Error creating user:', error);
     return res.status(500).json({ message: error.message || 'Something went wrong' });
   }
 };
@@ -94,7 +83,34 @@ const loginUser = async (req, res) => {
       user: foundUser
     });
   } catch (error) {
+    console.error('Error logging in:', error);
     return res.status(500).json({ message: error.message || 'error logging in' });
+  }
+};
+
+const { validationResult } = require("express-validator");
+
+const registerUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: errors.array()
+    });
+  }
+
+  try {
+    const { name, email, password } = req.body;
+
+    res.status(201).json({
+      message: "User details are valid",
+      user: { name, email }
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
   }
 };
 

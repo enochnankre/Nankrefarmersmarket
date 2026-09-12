@@ -1,5 +1,9 @@
 const express = require('express');
 
+const { protect } = require('../middleware/auth');
+
+const {authorize} = require('../middleware/role');
+
 const productController = require('../Controllers/productController');
 
 const router = express.Router();
@@ -11,10 +15,13 @@ router.post("/", (req, res) => {
   });
 });
 
-router.post('/createproducts', productController.createProduct);
+router.post('/createproducts', protect,authorize('superadmin'), productController.createProduct);
 
-router.put('/updateproducts/:id', productController.updateProducts);
+router.put('/updateproducts/:id', protect,authorize('superadmin'),authorize('storekeeper'), productController.updateProducts);
 
+router.get('/getproduct/:id', productController.getproductById);
+
+router.get('/getallproducts', productController.getallProducts);
 
 module.exports = router;
 

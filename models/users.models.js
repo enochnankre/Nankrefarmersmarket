@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
   },
     role: {
     type: String,
-    enum: ['admin', 'user'],
+    enum: ['admin', 'user', 'superadmin', 'manager', 'sales', 'storekeeper'],
     default: 'user'
     },
   address: {
@@ -42,11 +42,6 @@ const userSchema = new mongoose.Schema({
   hasadminaccess: {
     type: Boolean,
     default: false
-  },
-role: {
-    type: String,
-    enum: ['admin', 'user', 'superadmin', 'manager', 'sales', 'storekeeper'],
-    default: 'user'
   },
 
 

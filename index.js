@@ -17,6 +17,8 @@ const productRoutes = require("./Routes/productRoute");
 
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 const productSchema = new mongoose.Schema(
   {

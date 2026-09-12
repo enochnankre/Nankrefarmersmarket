@@ -1,5 +1,19 @@
 $kind: http-request
-name: create user
 url: http://localhost:8000/users/createuser
 method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Aaron",
+      "email": "aaron@gmail.com",
+      "password": "@Nankre123",
+      "gender": "male",
+      "phone": "08145540008",
+      "role": "superadmin",
+      "username": "aaron",
+      "address": "123 Main St"
+    }
 order: 630294276290419

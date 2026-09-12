@@ -1,13 +1,14 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require("../models/users.models.js");
+const bcrypt = require('bcryptjs');
 
-const createUser = async (req, res) => {
+
+
+exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, phone, username, gender, address, role, hasadminaccess } = req.body;
+    const { name, email, password, phone, gender, role, hasadminaccess } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email, and password are required' });
+    if (!name || !email || !password || !phone || !name || !gender || !role) {
+      return res.status(400).json({ message: 'All fields are required' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -23,7 +24,7 @@ const createUser = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     const newUser = new User({
       name: req.body.name,
@@ -34,7 +35,7 @@ const createUser = async (req, res) => {
       gender: req.body.gender,
       address: req.body.address,
       role: req.body.role || 'user',
-      hasadminacess: req.body.hasadminacess || false
+      hasadminaccess: req.body.hasadminaccess || false
     });
 
     const savedUser = await newUser.save();
@@ -49,7 +50,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -57,21 +58,21 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    const foundUser = await User.findOne({ email });
-    if (!foundUser) {
+    const user = await User.findOne({ email });
+    if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const isMatch = await bcrypt.compare(password, foundUser.password);
-    if (!isMatch) {
+    const ispasswordvalid = await bcrypt.compare(password, user.password);
+    if (!ispasswordvalid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    const jwt = require('jsonwebtoken');
     const token = jwt.sign(
       {
-        id: foundUser._id,
-        email: foundUser.email,
-        name: foundUser.name
+        email: user.email,
+        name: user.name
       },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
@@ -80,7 +81,7 @@ const loginUser = async (req, res) => {
     return res.status(200).json({
       message: 'Login successful',
       token,
-      user: foundUser
+      user
     });
   } catch (error) {
     console.error('Error logging in:', error);
@@ -100,22 +101,9 @@ const registerUser = async (req, res) => {
     });
   }
 
-  try {
-    const { name, email, password } = req.body;
-
-    res.status(201).json({
-      message: "User details are valid",
-      user: { name, email }
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
+  return exports.createUser(req, res);
 };
 
-module.exports = {
-  registerUser,
-  createUser,
-  loginUser
-};
+exports.registerUser = registerUser;
+
+

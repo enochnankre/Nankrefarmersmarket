@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   },
   color: {
     type: String,
-  
+    required: false
   },
   description: {
     type: String,
@@ -24,7 +24,15 @@ const productSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: true
+  },
+
+  image: {
+    type: String,
+    required: false
   }
+
+
+  
 }, {
   timestamps: true
 });

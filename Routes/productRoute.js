@@ -17,6 +17,8 @@ router.post("/", (req, res) => {
 
 router.post('/createproducts', protect,authorize('superadmin'), productController.createProduct);
 
+router.post('/createproductswithimage', protect,authorize('superadmin'), productController.createproductwithimage);
+
 router.put('/updateproducts/:id', protect,authorize('superadmin'),authorize('storekeeper'), productController.updateProducts);
 
 router.get('/getproduct/:id', productController.getproductById);
